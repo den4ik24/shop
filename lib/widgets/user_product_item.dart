@@ -25,7 +25,7 @@ class UserProducItem extends StatelessWidget {
             IconButton(
               icon: Icon(Icons.delete),
               onPressed: () {},
-              color: Theme.of(context).errorColor,
+              color: Theme.of(context).colorScheme.error,
             ),
           ],
         ),
