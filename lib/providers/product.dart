@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import "package:http/http.dart" as http;
 
 class Product with ChangeNotifier {
-  final String id;
-  final String title;
-  final String description;
-  final double price;
-  final String imageUrl;
-  bool isFavorite;
+  final String? id;
+  final String? title;
+  final String? description;
+  final double? price;
+  final String? imageUrl;
+  bool? isFavorite;
 
   Product({
     required this.id,
@@ -25,23 +25,25 @@ class Product with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> toggleFvoriteStatus() async {
+  Future<void> toggleFavoriteStatus(String token, String userId) async {
     final oldStatus = isFavorite;
-    isFavorite = !isFavorite;
+    isFavorite = !isFavorite!;
     notifyListeners();
     final url = Uri.parse(
-      "https://flutter-update-945ca-default-rtdb.europe-west1.firebasedatabase.app/products/$id.json",
+      "https://flutter-update-945ca-default-rtdb.europe-west1.firebasedatabase.app/userFavorites/$userId/$id.json?auth=$token",
     );
     try {
-      final response = await http.patch(url,
+      final response = await http.put(url,
           body: json.encode({
-            "isFavorite": isFavorite,
+            "$id": isFavorite.toString(),
           }));
       if (response.statusCode >= 400) {
-        _setFavValue(oldStatus);
+        _setFavValue(oldStatus!);
+        notifyListeners();
       }
     } catch (error) {
-      _setFavValue(oldStatus);
+      _setFavValue(oldStatus!);
+      notifyListeners();
     }
   }
 }

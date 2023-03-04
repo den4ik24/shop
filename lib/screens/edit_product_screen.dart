@@ -18,11 +18,11 @@ class _EditProductScreenState extends State<EditProductScreen> {
   final _imageUrlFocusNode = FocusNode();
   final _form = GlobalKey<FormState>();
   var _editedProduct = Product(
-    id: "",
-    title: "",
+    id: null,
+    title: null,
     price: 0,
-    description: "",
-    imageUrl: "",
+    description: null,
+    imageUrl: null,
   );
   var _initValues = {
     "title": "",
@@ -47,13 +47,13 @@ class _EditProductScreenState extends State<EditProductScreen> {
         _editedProduct = Provider.of<Products>(context, listen: false)
             .findById(productId as String);
         _initValues = {
-          "title": _editedProduct.title,
-          "description": _editedProduct.description,
+          "title": _editedProduct.title!,
+          "description": _editedProduct.description!,
           "price": _editedProduct.price.toString(),
           //"imageUrl": _editedProduct.imageUrl,
           "imageUrl": "",
         };
-        _imageUrlController.text = _editedProduct.imageUrl;
+        _imageUrlController.text = _editedProduct.imageUrl!;
       }
     }
     _isInit = false;
@@ -92,10 +92,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
     setState(() {
       _isLoading = true;
     });
-    if (_editedProduct.id != "") {
+    if (_editedProduct.id != null) {
       try {
         await Provider.of<Products>(context, listen: false)
-            .updateProduct(_editedProduct.id, _editedProduct);      
+            .updateProduct(_editedProduct.id!, _editedProduct);      
       } catch (error) {
         print(error);
         throw error;
